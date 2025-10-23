@@ -1,0 +1,16 @@
+﻿<Window x:Class="Clean_Planet.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Clean_Planet"
+        mc:Ignorable="d"
+        Title="Главная" Height="450" Width="600">
+    <Grid x:Name="grid1">
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="144,0,0,0" >
+            <StackPanel x:Name="stackPanel1" Width="438" />
+        </ScrollViewer>
+        <Button Content="Добавить" HorizontalAlignment="Left" Margin="25,176,0,0" VerticalAlignment="Top" Height="41" Width="87" Background="DarkTurquoise" Click="Button_Click"/>
+        <Button Content="История" HorizontalAlignment="Left" Margin="25,240,0,0" VerticalAlignment="Top" Height="41" Width="87" Background="#FFCBD6E5" Click="history_Click"/>
+    </Grid>
+</Window>

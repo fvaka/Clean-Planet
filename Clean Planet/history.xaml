@@ -1,0 +1,16 @@
+﻿<Window x:Class="Clean_Planet.history"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Clean_Planet"
+        mc:Ignorable="d"
+        Title="История партнеров" Height="413" Width="571">
+    <Grid>
+        <ComboBox x:Name="cmbPartners" HorizontalAlignment="Left" Margin="30,26,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="CmbPartners_SelectedIndexChanged" FontFamily="Franklin Gothic Medium"/>
+        <Button x:Name="refreshBtn" Content="Обновить" HorizontalAlignment="Left" Margin="48,318,0,0" VerticalAlignment="Top" Height="34" Width="127" Click="refreshBtn_Click" Background="DarkTurquoise" FontFamily="Franklin Gothic Medium"/>
+        <Button x:Name="backBtn" Content="Назад" HorizontalAlignment="Left" Margin="198,318,0,0" VerticalAlignment="Top" Height="34" Width="108" Click="backBtn_Click" Background="#FFCBD6E5" FontFamily="Franklin Gothic Medium"/>
+        <DataGrid x:Name="dataGridView1" Margin="30,68,51,114" Background="LightCyan" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" FontFamily="Franklin Gothic Medium"/>
+
+    </Grid>
+</Window>

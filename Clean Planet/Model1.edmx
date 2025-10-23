@@ -1,0 +1,365 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище CleanPlanetModel" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Material_type_import">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Тип материала" Type="nvarchar" MaxLength="255" />
+          <Property Name="Процент перерасхода материала" Type="float" />
+        </EntityType>
+        <!--Ошибки, обнаруженные при создании:
+предупреждение 6013: Первичный ключ в таблице или представлении "CleanPlanet.dbo.Materials_for_services" не определен, его не удалось вывести. Эта таблица или представление исключены. Чтобы использовать сущность, необходимо проверить схему, добавить правильные ключи и раскомментировать ее.
+        <EntityType Name="Materials_for_services">
+          <Property Name="ID_sevice" Type="int" />
+          <Property Name="ID_material" Type="int" />
+          <Property Name="amount" Type="int" />
+        </EntityType>-->
+        <EntityType Name="Partner_services_import">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Услуга" Type="nvarchar" MaxLength="255" />
+          <Property Name="Наименование партнера" Type="nvarchar" MaxLength="255" />
+          <Property Name="Количество услуг" Type="float" />
+          <Property Name="Дата выполнения" Type="nvarchar" MaxLength="255" />
+          <Property Name="ID партнера" Type="int" />
+          <Property Name="ID услуги" Type="int" />
+        </EntityType>
+        <EntityType Name="Partners_import">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Тип партнера" Type="nvarchar" MaxLength="255" />
+          <Property Name="Наименование партнера" Type="nvarchar" MaxLength="255" />
+          <Property Name="Руководитель" Type="nvarchar" MaxLength="255" />
+          <Property Name="Электронная почта партнера" Type="nvarchar" MaxLength="255" />
+          <Property Name="Телефон партнера" Type="nvarchar" MaxLength="255" />
+          <Property Name="Юридический адрес партнера" Type="nvarchar" MaxLength="255" />
+          <Property Name="ИНН" Type="float" />
+          <Property Name="Рейтинг" Type="float" />
+        </EntityType>
+        <EntityType Name="Service_type_import">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Тип услуги" Type="nvarchar" MaxLength="255" />
+          <Property Name="Коэффициент сложности услуги" Type="float" />
+        </EntityType>
+        <EntityType Name="Services_import">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Тип услуги" Type="int" />
+          <Property Name="Наименование услуги" Type="nvarchar" MaxLength="255" />
+          <Property Name="Код услуги" Type="nvarchar" MaxLength="255" />
+          <Property Name="Минимальная стоимость для партнера" Type="float" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <!--Ошибки, обнаруженные при создании:
+ошибка 6004: Невозможно найти таблицу "CleanPlanet.dbo.Materials_for_services", на которую ссылается связь.
+        <Association Name="FK_Materials_for_services_Material_type_import" />-->
+        <!--Ошибки, обнаруженные при создании:
+ошибка 6004: Невозможно найти таблицу "CleanPlanet.dbo.Materials_for_services", на которую ссылается связь.
+        <Association Name="FK_Materials_for_services_Services_import" />-->
+        <Association Name="FK_Partner_services_import_Partners_import">
+          <End Role="Partners_import" Type="Self.Partners_import" Multiplicity="0..1" />
+          <End Role="Partner_services_import" Type="Self.Partner_services_import" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Partners_import">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Partner_services_import">
+              <PropertyRef Name="ID партнера" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Partner_services_import_Services_import">
+          <End Role="Services_import" Type="Self.Services_import" Multiplicity="0..1" />
+          <End Role="Partner_services_import" Type="Self.Partner_services_import" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Services_import">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Partner_services_import">
+              <PropertyRef Name="ID услуги" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Services_import_Service_type_import">
+          <End Role="Service_type_import" Type="Self.Service_type_import" Multiplicity="0..1" />
+          <End Role="Services_import" Type="Self.Services_import" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Service_type_import">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Services_import">
+              <PropertyRef Name="Тип услуги" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище CleanPlanetModelContainer">
+          <EntitySet Name="Material_type_import" EntityType="Self.Material_type_import" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Partner_services_import" EntityType="Self.Partner_services_import" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Partners_import" EntityType="Self.Partners_import" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Service_type_import" EntityType="Self.Service_type_import" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Services_import" EntityType="Self.Services_import" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Partner_services_import_Partners_import" Association="Self.FK_Partner_services_import_Partners_import">
+            <End Role="Partners_import" EntitySet="Partners_import" />
+            <End Role="Partner_services_import" EntitySet="Partner_services_import" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Partner_services_import_Services_import" Association="Self.FK_Partner_services_import_Services_import">
+            <End Role="Services_import" EntitySet="Services_import" />
+            <End Role="Partner_services_import" EntitySet="Partner_services_import" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Services_import_Service_type_import" Association="Self.FK_Services_import_Service_type_import">
+            <End Role="Service_type_import" EntitySet="Service_type_import" />
+            <End Role="Services_import" EntitySet="Services_import" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="CleanPlanetModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Material_type_import">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Тип_материала" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Процент_перерасхода_материала" Type="Double" />
+        </EntityType>
+        <EntityType Name="Partner_services_import">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Услуга" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Наименование_партнера" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Количество_услуг" Type="Double" />
+          <Property Name="Дата_выполнения" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ID_партнера" Type="Int32" />
+          <Property Name="ID_услуги" Type="Int32" />
+          <NavigationProperty Name="Partners_import" Relationship="Self.FK_Partner_services_import_Partners_import" FromRole="Partner_services_import" ToRole="Partners_import" />
+          <NavigationProperty Name="Services_import" Relationship="Self.FK_Partner_services_import_Services_import" FromRole="Partner_services_import" ToRole="Services_import" />
+        </EntityType>
+        <EntityType Name="Partners_import">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Тип_партнера" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Наименование_партнера" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Руководитель" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Электронная_почта_партнера" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Телефон_партнера" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Юридический_адрес_партнера" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ИНН" Type="Double" />
+          <Property Name="Рейтинг" Type="Double" />
+          <NavigationProperty Name="Partner_services_import" Relationship="Self.FK_Partner_services_import_Partners_import" FromRole="Partners_import" ToRole="Partner_services_import" />
+        </EntityType>
+        <EntityType Name="Service_type_import">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Тип_услуги" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Коэффициент_сложности_услуги" Type="Double" />
+          <NavigationProperty Name="Services_import" Relationship="Self.FK_Services_import_Service_type_import" FromRole="Service_type_import" ToRole="Services_import" />
+        </EntityType>
+        <EntityType Name="Services_import">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Тип_услуги" Type="Int32" />
+          <Property Name="Наименование_услуги" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Код_услуги" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Минимальная_стоимость_для_партнера" Type="Double" />
+          <NavigationProperty Name="Partner_services_import" Relationship="Self.FK_Partner_services_import_Services_import" FromRole="Services_import" ToRole="Partner_services_import" />
+          <NavigationProperty Name="Service_type_import" Relationship="Self.FK_Services_import_Service_type_import" FromRole="Services_import" ToRole="Service_type_import" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <Association Name="FK_Partner_services_import_Partners_import">
+          <End Role="Partners_import" Type="Self.Partners_import" Multiplicity="0..1" />
+          <End Role="Partner_services_import" Type="Self.Partner_services_import" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Partners_import">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Partner_services_import">
+              <PropertyRef Name="ID_партнера" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Partner_services_import_Services_import">
+          <End Role="Services_import" Type="Self.Services_import" Multiplicity="0..1" />
+          <End Role="Partner_services_import" Type="Self.Partner_services_import" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Services_import">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Partner_services_import">
+              <PropertyRef Name="ID_услуги" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Services_import_Service_type_import">
+          <End Role="Service_type_import" Type="Self.Service_type_import" Multiplicity="0..1" />
+          <End Role="Services_import" Type="Self.Services_import" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Service_type_import">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Services_import">
+              <PropertyRef Name="Тип_услуги" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CleanPlanetEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Material_type_import" EntityType="Self.Material_type_import" />
+          <EntitySet Name="Partner_services_import" EntityType="Self.Partner_services_import" />
+          <EntitySet Name="Partners_import" EntityType="Self.Partners_import" />
+          <EntitySet Name="Service_type_import" EntityType="Self.Service_type_import" />
+          <EntitySet Name="Services_import" EntityType="Self.Services_import" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <AssociationSet Name="FK_Partner_services_import_Partners_import" Association="Self.FK_Partner_services_import_Partners_import">
+            <End Role="Partners_import" EntitySet="Partners_import" />
+            <End Role="Partner_services_import" EntitySet="Partner_services_import" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Partner_services_import_Services_import" Association="Self.FK_Partner_services_import_Services_import">
+            <End Role="Services_import" EntitySet="Services_import" />
+            <End Role="Partner_services_import" EntitySet="Partner_services_import" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Services_import_Service_type_import" Association="Self.FK_Services_import_Service_type_import">
+            <End Role="Service_type_import" EntitySet="Service_type_import" />
+            <End Role="Services_import" EntitySet="Services_import" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище CleanPlanetModelContainer" CdmEntityContainer="CleanPlanetEntities">
+          <EntitySetMapping Name="Material_type_import">
+            <EntityTypeMapping TypeName="CleanPlanetModel.Material_type_import">
+              <MappingFragment StoreEntitySet="Material_type_import">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Тип_материала" ColumnName="Тип материала" />
+                <ScalarProperty Name="Процент_перерасхода_материала" ColumnName="Процент перерасхода материала" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Partner_services_import">
+            <EntityTypeMapping TypeName="CleanPlanetModel.Partner_services_import">
+              <MappingFragment StoreEntitySet="Partner_services_import">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Услуга" ColumnName="Услуга" />
+                <ScalarProperty Name="Наименование_партнера" ColumnName="Наименование партнера" />
+                <ScalarProperty Name="Количество_услуг" ColumnName="Количество услуг" />
+                <ScalarProperty Name="Дата_выполнения" ColumnName="Дата выполнения" />
+                <ScalarProperty Name="ID_партнера" ColumnName="ID партнера" />
+                <ScalarProperty Name="ID_услуги" ColumnName="ID услуги" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Partners_import">
+            <EntityTypeMapping TypeName="CleanPlanetModel.Partners_import">
+              <MappingFragment StoreEntitySet="Partners_import">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Тип_партнера" ColumnName="Тип партнера" />
+                <ScalarProperty Name="Наименование_партнера" ColumnName="Наименование партнера" />
+                <ScalarProperty Name="Руководитель" ColumnName="Руководитель" />
+                <ScalarProperty Name="Электронная_почта_партнера" ColumnName="Электронная почта партнера" />
+                <ScalarProperty Name="Телефон_партнера" ColumnName="Телефон партнера" />
+                <ScalarProperty Name="Юридический_адрес_партнера" ColumnName="Юридический адрес партнера" />
+                <ScalarProperty Name="ИНН" ColumnName="ИНН" />
+                <ScalarProperty Name="Рейтинг" ColumnName="Рейтинг" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Service_type_import">
+            <EntityTypeMapping TypeName="CleanPlanetModel.Service_type_import">
+              <MappingFragment StoreEntitySet="Service_type_import">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Тип_услуги" ColumnName="Тип услуги" />
+                <ScalarProperty Name="Коэффициент_сложности_услуги" ColumnName="Коэффициент сложности услуги" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Services_import">
+            <EntityTypeMapping TypeName="CleanPlanetModel.Services_import">
+              <MappingFragment StoreEntitySet="Services_import">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Тип_услуги" ColumnName="Тип услуги" />
+                <ScalarProperty Name="Наименование_услуги" ColumnName="Наименование услуги" />
+                <ScalarProperty Name="Код_услуги" ColumnName="Код услуги" />
+                <ScalarProperty Name="Минимальная_стоимость_для_партнера" ColumnName="Минимальная стоимость для партнера" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="CleanPlanetModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
